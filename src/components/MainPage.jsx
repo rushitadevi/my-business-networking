@@ -1,6 +1,6 @@
 import React from 'react'
 import { withRouter } from "react-router";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import NavBar from './NavBar';
 import Home from './Home';
 import Posts from "./Posts"
@@ -14,11 +14,10 @@ class MainPage extends React.Component {
         var RoutedNavigation = withRouter(NavBar);
         return (
             <> 
-            <Provider store={configureStore()}>
-            
+            <Provider store={configureStore()}>            
             <Router>
             <RoutedNavigation exact />           
-            <Route path="/Me" exact  component={Home}   />
+            <Route path="/user" exact  component={Home}   />
              <Route path="/" exact component={Posts} />
              <ChatWindow/>
             </Router>

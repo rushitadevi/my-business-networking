@@ -1,6 +1,11 @@
 import React, {Component} from 'react'
 import {Launcher} from 'react-chat-window'
 import io from "socket.io-client";
+import { connect } from "react-redux";
+
+const mapStateToProps = state => {
+  return state;
+};
 
 class ChatWindow extends Component {
     socket = null;
@@ -17,10 +22,11 @@ class ChatWindow extends Component {
             transports: ["websocket"]
           };
           this.socket = io("https://striveschool.herokuapp.com/", connOpts);
+          
           this.socket.on("ko", msg => {
           this.setState(
           {
-            messageList: this.state.messageList.concat(msg)
+            messageList: this.state.messageList
           },
         
         () => {
@@ -54,7 +60,7 @@ class ChatWindow extends Component {
       
 
     render() { 
-       
+       //console.log(this.props.users.users,"in chat window")
         return (
             <div>
       <Launcher
@@ -71,4 +77,4 @@ class ChatWindow extends Component {
     }
 }
  
-export default ChatWindow;
+export default connect(mapStateToProps)(ChatWindow);

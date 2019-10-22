@@ -4,9 +4,9 @@ import Modal from "react-bootstrap/Modal";
 import { connect } from "react-redux";
 import InputGroup from "react-bootstrap/InputGroup";
 import bgImg from "../Img/linkBg.jpg";
+import noImg from "../Img/no_img.jpg"
 import FormControl from "react-bootstrap/FormControl";
-import { AddPost, FetchPosts } from "../actions"
-import { handleProfile } from "../actions/index";
+import { AddPost, FetchPosts,FetchUsers,handleProfile } from "../actions/index"
 
 const mapStateToProps = state => {
     return state;
@@ -15,7 +15,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
     addPostThunk: state => dispatch(AddPost(state)),
     fetchPosts: () => dispatch(FetchPosts()),
-    profileThunk: () => dispatch(handleProfile())
+    profileThunk: (user) => dispatch(handleProfile(user)),
+    getUsers: () => dispatch(FetchUsers())
 });
 
 class Posts extends React.Component {
@@ -23,13 +24,27 @@ class Posts extends React.Component {
         super(props);
         this.state = {
             showModal: false,
-            text1: ''
+            text1: '',
+            userName :''
         };
     }
 
     componentDidMount = () => {
         this.props.fetchPosts()
-        this.props.profileThunk()
+       this.props.profileThunk("user8")
+        this.props.getUsers()   
+       
+        
+    }
+
+    componentDidUpdate=()=>{
+        //console.log(this.props.post.post,"post")
+        //var post1=this.props.post.post
+        //var users=this.props.users.users
+       
+       // Object.assign(users, post1);
+        //var final= post1.filter((user)=>user===this.props.users.users)
+        //console.log("user",final)
     }
 
     toggleModal = () => {
@@ -42,7 +57,15 @@ class Posts extends React.Component {
         });
     };
 
+    displayUSerName=()=>{
+        var post=this.props.post.post
+        console.log(post,"lo")
+        
+       //post.concat("hi")
+    }
+
     render() {
+        //this.displayUSerName()
         return (
             <>
                 <div className="container-fluid p-4 bg-light" >
@@ -60,13 +83,13 @@ class Posts extends React.Component {
                                                 borderRadius: "150px", border: "2px solid white", Width: "100px", height: "100px", position: "absolute",
                                                 marginTop: "-110px", marginLeft: "20px"
                                             }} />
-                                        {this.props.profile1.profile && this.props.profile1.profile.map((profile, index) => (
+                                        {this.props.profile.profile && 
                                             <>
-                                            <p key={index} style={{ color: "black", fontSize: "20px", marginTop: "-10px" }} >
-                                            {profile.name}  {profile.surname}</p>
-                                            <p style={{width:"250px"}}>{profile.area}</p>
+                                            <p style={{ color: "black", fontSize: "20px", marginTop: "-10px" }}  >
+                                            { this.props.profile.profile.name}  {this.props.profile.profile.surname}</p>
+                                            <p style={{width:"250px"}}>{this.props.profile.profile.area}</p>
                                             </>
-                                            ))}
+                                            }
                                     </div>
                                 </div>
                                 <div className="row  mt-2 shadow-sm p-3 mb-3 bg-white rounded border  "
@@ -82,7 +105,7 @@ class Posts extends React.Component {
                                     </button>
                                     <p className="mt-4 ml-4" style={{ color: "grey", fontWeight: "bold", fontSize: "15px" }} >Start a Post</p>
                                 </div>
-                                {this.props.post.posts && this.props.post.posts.map((post, index) => (
+                                {this.props.post.post && this.props.post.post.map((post, index) => (
                                     <div key={index} className="row  mt-2 shadow-sm p-3 mb-3 bg-white rounded border  ">
                                         <div> <p style={{ fontWeight: "bold" }} >
                                             <a href="#" className="ml-4" role="button" aria-pressed="true">{post.username}</a>
@@ -98,9 +121,19 @@ class Posts extends React.Component {
                                 </div>
                             </div>
                             <div className="col-md-3">
-                                <div className="row ml-1 mt-2 shadow-sm p-3 mb-3 bg-white rounded border  "
+                                {/* <div className="row ml-1 mt-2 shadow-sm p-3 mb-3 bg-white rounded border  "
                                     style={{ height: "300px" }} >
+                                </div> */}
+                                {this.props.users.users && this.props.users.users.map((usr,index)=>(
+                                    <div key={index} className="row p-3" >
+                                        {usr.image ?
+                                        <img className="img-valign" src={usr.image} alt="" style={{borderRadius:"50px ",width:"50px"}} />
+                                        : <img className="img-valign" src={noImg} alt="" style={{borderRadius:"50px ",width:"50px"}} />
+                                         }
+                                       <span className="pl-3">{usr.name}  {usr.surname}</span>
                                 </div>
+                                )) }
+                                
                             </div>
                         </div>
                     </div>

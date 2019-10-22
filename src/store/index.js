@@ -1,6 +1,8 @@
 import { createStore, combineReducers, compose, applyMiddleware } from "redux";
 import profileReduder from "../reducers/profile"
 import PostReducer from "../reducers/posts"
+import experienceReducer from "../reducers/experience"
+import userReducer from "../reducers/users"
 import thunk from "redux-thunk";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -8,14 +10,13 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 
 const initialState = {
-  post: {
-    posts: []
-  },
-  profile1: {
-    profile: []
-  }
-  };
-  const combReducer = combineReducers({profile1: profileReduder,post:PostReducer });
+  post:[],
+  profile: [],  
+  experience :[],
+  users:[]
+  
+}
+  const combReducer = combineReducers({profile: profileReduder,post:PostReducer,experience:experienceReducer,users:userReducer });
 
   export default function configureStore() {
     return createStore(

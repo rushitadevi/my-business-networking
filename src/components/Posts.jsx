@@ -6,7 +6,8 @@ import InputGroup from "react-bootstrap/InputGroup";
 import bgImg from "../Img/linkBg.jpg";
 import noImg from "../Img/no_img.jpg"
 import FormControl from "react-bootstrap/FormControl";
-import { AddPost, FetchPosts,FetchUsers,handleProfile } from "../actions/index"
+import { AddPost, FetchPosts, FetchUsers, handleProfile } from "../actions/index"
+import NavBar from './NavBar';
 
 const mapStateToProps = state => {
     return state;
@@ -25,26 +26,33 @@ class Posts extends React.Component {
         this.state = {
             showModal: false,
             text1: '',
-            userName :''
+            userName: '',
+            name:""
         };
     }
 
     componentDidMount = () => {
         this.props.fetchPosts()
-       this.props.profileThunk("user8")
-        this.props.getUsers()   
        
-        
+        this.props.profileThunk("user8")
+        this.props.getUsers()
     }
 
-    componentDidUpdate=()=>{
-        //console.log(this.props.post.post,"post")
-        //var post1=this.props.post.post
-        //var users=this.props.users.users
-       
-       // Object.assign(users, post1);
-        //var final= post1.filter((user)=>user===this.props.users.users)
-        //console.log("user",final)
+    getTitle = username => {
+        var arr = this.props.users.users        
+        if(arr !==undefined)
+        {
+            const profile = arr.find(e => e.username === username);
+            return profile !== undefined && profile.name !== undefined
+                ? profile.name + " " + profile.surname
+                : "";
+        }          
+    }
+
+    setName=(usernamw)=>{
+        this.setState({
+            name:usernamw
+        })
     }
 
     toggleModal = () => {
@@ -57,17 +65,15 @@ class Posts extends React.Component {
         });
     };
 
-    displayUSerName=()=>{
-        var post=this.props.post.post
-        console.log(post,"lo")
-        
-       //post.concat("hi")
+    showTime=()=>{
+        this.setState({time:new Date().toLocaleTimeString()})
+        console.log("time",this.state.time)
     }
 
     render() {
-        //this.displayUSerName()
         return (
-            <>
+            <>            
+            {/* <NavBar/> */}
                 <div className="container-fluid p-4 bg-light" >
                     <div className="container">
                         <div className="row">
@@ -83,13 +89,13 @@ class Posts extends React.Component {
                                                 borderRadius: "150px", border: "2px solid white", Width: "100px", height: "100px", position: "absolute",
                                                 marginTop: "-110px", marginLeft: "20px"
                                             }} />
-                                        {this.props.profile.profile && 
+                                        {this.props.profile.profile &&
                                             <>
-                                            <p style={{ color: "black", fontSize: "20px", marginTop: "-10px" }}  >
-                                            { this.props.profile.profile.name}  {this.props.profile.profile.surname}</p>
-                                            <p style={{width:"250px"}}>{this.props.profile.profile.area}</p>
+                                                <p style={{ color: "black", fontSize: "20px", marginTop: "-10px" }}  >
+                                                    {this.props.profile.profile.name}  {this.props.profile.profile.surname}</p>
+                                                <p style={{ width: "250px" }}>{this.props.profile.profile.area}</p>
                                             </>
-                                            }
+                                        }
                                     </div>
                                 </div>
                                 <div className="row  mt-2 shadow-sm p-3 mb-3 bg-white rounded border  "
@@ -107,11 +113,14 @@ class Posts extends React.Component {
                                 </div>
                                 {this.props.post.post && this.props.post.post.map((post, index) => (
                                     <div key={index} className="row  mt-2 shadow-sm p-3 mb-3 bg-white rounded border  ">
+
                                         <div> <p style={{ fontWeight: "bold" }} >
-                                            <a href="#" className="ml-4" role="button" aria-pressed="true">{post.username}</a>
+                                            <a href="https://github.com/reactstrap/reactstrap" className="ml-4" role="button" aria-pressed="true">{this.getTitle(post.username)}</a>
+
                                         </p></div>
                                         <div className="alert alert-light" role="alert">
                                             {post.text}
+                                          <span> {this.state.time}</span>  
                                         </div>
                                     </div>
                                 ))}
@@ -124,16 +133,16 @@ class Posts extends React.Component {
                                 {/* <div className="row ml-1 mt-2 shadow-sm p-3 mb-3 bg-white rounded border  "
                                     style={{ height: "300px" }} >
                                 </div> */}
-                                {this.props.users.users && this.props.users.users.map((usr,index)=>(
+                                {/* {this.props.users.users && this.props.users.users.map((usr, index) => (
                                     <div key={index} className="row p-3" >
                                         {usr.image ?
-                                        <img className="img-valign" src={usr.image} alt="" style={{borderRadius:"50px ",width:"50px"}} />
-                                        : <img className="img-valign" src={noImg} alt="" style={{borderRadius:"50px ",width:"50px"}} />
-                                         }
-                                       <span className="pl-3">{usr.name}  {usr.surname}</span>
-                                </div>
-                                )) }
-                                
+                                            <img className="img-valign" src={usr.image} alt="" style={{ borderRadius: "50px ", width: "50px" }} />
+                                            : <img className="img-valign" src={noImg} alt="" style={{ borderRadius: "50px ", width: "50px" }} />
+                                        }
+                                        <button onClick={()=>this.setName(usr.username)}> <a href="#" alt="link" className="pl-3" >{usr.name}  {usr.surname}</a></button>
+                                    </div>
+                                ))} */}
+
                             </div>
                         </div>
                     </div>
@@ -157,7 +166,8 @@ class Posts extends React.Component {
                             Close
                      </Button>
                         <Button variant="primary" style={{ backgroundColor: "#2867B2" }}
-                            onClick={() => { this.toggleModal(); this.props.addPostThunk(this.state.text1) }}>
+                            onClick={() => { this.toggleModal(); this.props.addPostThunk(this.state.text1);this.showTime() }}>
+                                 
                             Post
                    </Button>
                     </Modal.Footer>

@@ -1,10 +1,11 @@
 export default function(state = {}, action) {
   switch (action.type) {
-    case "GET_EXPERIENCE":
+    case "LOGIN_DATA":
       return {
-        ...state.experience,
-        experience: action.payload
+        ...state.userLoginList,
+        userLoginList: state.userLoginList.concat(action.payload)
       };
+    
     default:
       return state;
   }

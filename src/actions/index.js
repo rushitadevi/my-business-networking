@@ -1,4 +1,3 @@
-
 export const handleProfile = data => {
   return async (dispatch, getState) => {
     let username = "user8";
@@ -7,7 +6,7 @@ export const handleProfile = data => {
     var headers = new Headers({
       "Content-Type": "application/json"
     });
-
+ 
     headers.set("Authorization", "Basic " + btoa(authString));
 
     var response = await fetch(
@@ -25,8 +24,8 @@ export const handleProfile = data => {
   };
 };
 
-export const FetchExperiences = (user) => {
-  console.log(user,"insie")
+export const FetchExperiences = user => {
+  console.log(user, "insie");
   return async (dispatch, getState) => {
     let username = "user8";
     let password = "eAqd2ZPk3Rbtm8Mw";
@@ -36,22 +35,23 @@ export const FetchExperiences = (user) => {
     });
 
     headers.set("Authorization", "Basic " + btoa(authString));
+    if (user === "user") user = "user8";
     var response = await fetch(
-      "https://striveschool.herokuapp.com/api/profiles/"+ user  +"/experiences" ,
+      "https://striveschool.herokuapp.com/api/profiles/" +
+        user +
+        "/experiences",
       {
         method: "GET",
         headers: headers
       }
     );
     var jSon = await response.json();
-    console.log(jSon,"exp")
     dispatch({
       type: "GET_EXPERIENCE",
       payload: jSon
     });
   };
 };
-
 
 export const FetchUsers = () => {
   return async (dispatch, getState) => {
@@ -64,24 +64,23 @@ export const FetchUsers = () => {
 
     headers.set("Authorization", "Basic " + btoa(authString));
     var response = await fetch(
-      "https://striveschool.herokuapp.com/api/profiles/" ,
+      "https://striveschool.herokuapp.com/api/profiles/",
       {
         method: "GET",
         headers: headers
       }
     );
     var jSon = await response.json();
-   
-    var value=jSon[6]
-    var newJson=jSon.filter(item => item !==value )
-   
+
+    //var value=jSon[6]
+    // var newJson=jSon.filter(item => item !==value )
+
     dispatch({
       type: "GET_USERS",
-      payload: newJson
+      payload: jSon
     });
   };
 };
-
 
 export const AddPost = state => {
   return async (dispatch, getState) => {
@@ -89,19 +88,19 @@ export const AddPost = state => {
     let password = "eAqd2ZPk3Rbtm8Mw";
     let authString = `${username}:${password}`;
     var headers = new Headers({
-      'Accept': 'application/json',
+      Accept: "application/json",
       "Content-Type": "application/json"
     });
-    const toSend = { text: state} //json needs object not text, so need to convert into object
+    const toSend = { text: state }; //json needs object not text, so need to convert into object
     headers.set("Authorization", "Basic " + btoa(authString));
-   var response = await fetch(
-    "https://striveschool.herokuapp.com/api/posts/" ,
-    {
-      method: "POST",
-      body:JSON.stringify(toSend),
-      headers: headers
-    }
-  );
+    var response = await fetch(
+      "https://striveschool.herokuapp.com/api/posts/",
+      {
+        method: "POST",
+        body: JSON.stringify(toSend),
+        headers: headers
+      }
+    );
     var jSon = await response.json();
     dispatch({
       type: "ADD_POSTS",
@@ -111,7 +110,7 @@ export const AddPost = state => {
 };
 
 export const FetchPosts = () => {
-  console.log("key")
+  console.log("key");
   return async (dispatch, getState) => {
     let username = "user8";
     let password = "eAqd2ZPk3Rbtm8Mw";
@@ -122,18 +121,17 @@ export const FetchPosts = () => {
 
     headers.set("Authorization", "Basic " + btoa(authString));
     var response = await fetch(
-      " https://striveschool.herokuapp.com/api/posts/" ,
+      " https://striveschool.herokuapp.com/api/posts/",
       {
         method: "GET",
         headers: headers
       }
     );
     var jSon = await response.json();
-    console.log(jSon,"json")
+
     dispatch({
       type: "GET_POSTS",
       payload: jSon
     });
   };
 };
-

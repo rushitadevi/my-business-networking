@@ -6,6 +6,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import { connect } from "react-redux";
 import { FetchExperiences } from "../actions/index"
+import noImg from "../Img/no_img.jpg"
 
 const mapStateToProps = state => state;
 
@@ -19,28 +20,41 @@ class Home extends React.Component {
         super(props);
         this.state = {
             showModal: false,
-            profile:[],
-            setExperience: []
+            profile: [],
+            setExperience: [],
+            name:""
         };
     }
     toggleModal = () => {
         this.setState({ showModal: !this.state.showModal });
     };
 
-    componentDidMount = () => {       
-        var path=this.props.match.path
-        var path1=path.slice(1,path.length)
-        console.log("path",path1)
-       // this.props.profileThunk(path1)
+    componentDidMount = () => {
+       // console.log(this.props.match.params.user,"unde")
+        //if(this.props.match.params.user !==undefined)
+        //var username = this.props.match.params.user
+        //var path = this.props.match.path
+      //  var path1 = path.slice(1, path.length)
+        // this.props.profileThunk(path1)
+      
         this.props.fetchPosts("user8")
     }
+
+    // setName=(usernamw)=>{
+    //     console.log(usernamw,"useroo")
+    //     this.setState({           
+    //         name:usernamw
+    //     })
+    //     console.log(this.state.name,"name")
+    // }
+
     
-    state = {}
-    render() {            
+    render() {
         return (
             <>
-                {this.props.profile.profile && 
-                    <div  className="container-fluid bg-light" style={{ paddingBottom: "100px" }} >
+            {/* <NavBar/> */}
+                {this.props.profile.profile &&
+                    <div className="container-fluid bg-light" style={{ paddingBottom: "100px" }} >
                         <div className="container"  >
                             <div className="row">
                                 <div className="col-md-8 mt-5">
@@ -78,30 +92,47 @@ class Home extends React.Component {
                                                         </div>
                                                     </div>
                                                 ))}
-                                                
+
                                             </div>
                                             <div className="col-md-9 mt-3" >
                                                 <div>
-                                                <button style={{ float: "right", marginLeft: "10px" }}
-                                                    onClick={() => this.setState({ showModal: true })} >Add</button>
+                                                    <button style={{ float: "right", marginLeft: "10px" }}
+                                                        onClick={() => this.setState({ showModal: true })} >Add</button>
                                                 </div>
-                                                 {this.props.experience.experience && this.props.experience.experience.map((ex, index) => (
-                                                <div key={index} className="alert-light pt-4" >
-                                                    <p>{ex.role}</p>
-                                                    <p>{ex.company}</p>
-                                                    <p>{ex.description}</p>
-                                                </div>
-                                                      ))}
+                                                {this.props.experience.experience && this.props.experience.experience.map((ex, index) => (
+                                                    <div key={index} className="alert-light pt-4" >
+                                                        <p>{ex.role}</p>
+                                                        <p>{ex.company}</p>
+                                                        <p>{ex.description}</p>
+                                                    </div>
+                                                ))}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-md-4 mt-5 bg-light">
+                                    {/* <div className="row"></div>
                                     <ul className="list-group ">
                                         <li className="list-group-item">Cras justo odio</li>
                                         <li className="list-group-item">Dapibus ac facilisis in</li>
-                                    </ul>
+                                    </ul> */}
+                                    {this.props.users.users && this.props.users.users.map((usr, index) => (
+                                    <div key={index} className="row p-3" >
+                                        {usr.image ?
+                                            <img className="img-valign" src={usr.image} alt="" style={{ borderRadius: "50px ", width: "50px" }} />
+                                            : <img className="img-valign" src={noImg} alt="" style={{ borderRadius: "50px ", width: "50px" }} />
+                                        }                                       
+                                        <a href="#" alt="link" className="pl-3" >{usr.name}  {usr.surname}</a>
+                                    </div>
+                                ))}
+
                                 </div>
+                                <div className="col-md-4">
+                                {/* <div className="row ml-1 mt-2 shadow-sm p-3 mb-3 bg-white rounded border  "
+                                    style={{ height: "300px" }} >
+                                </div> */}
+                                
+                            </div>
                             </div>
                         </div>
                     </div>
